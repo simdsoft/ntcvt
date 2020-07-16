@@ -8,6 +8,10 @@
 #include <Windows.h>
 #include <string>
 
+#if !defined(NTCVT_CP_DEFAULT)
+#define NTCVT_CP_DEFAULT CP_ACP
+#endif
+
 namespace ntcvt
 {
 
@@ -67,7 +71,7 @@ template <typename _Elem> _Elem* inplaced(CStringT<_Elem, StrTraitMFC_DLL<_Elem>
 } // namespace buffer_traits
 
 template <typename _StringContType>
-inline _StringContType wcbs2a(const wchar_t* wcb, int len, UINT cp = CP_ACP)
+inline _StringContType wcbs2a(const wchar_t* wcb, int len, UINT cp = NTCVT_CP_DEFAULT)
 {
   if (len == -1)
     len = lstrlenW(wcb);
@@ -79,7 +83,7 @@ inline _StringContType wcbs2a(const wchar_t* wcb, int len, UINT cp = CP_ACP)
 }
 
 template <typename _StringContType>
-inline _StringContType mcbs2w(const char* mcb, int len, UINT cp = CP_ACP)
+inline _StringContType mcbs2w(const char* mcb, int len, UINT cp = NTCVT_CP_DEFAULT)
 {
   if (len == -1)
     len = lstrlenA(mcb);
@@ -91,7 +95,7 @@ inline _StringContType mcbs2w(const char* mcb, int len, UINT cp = CP_ACP)
   return buffer;
 }
 
-inline int mcbs2w(const char* mcb, int len, wchar_t* wbuf, int wbuf_len, UINT cp = CP_ACP)
+inline int mcbs2w(const char* mcb, int len, wchar_t* wbuf, int wbuf_len, UINT cp = NTCVT_CP_DEFAULT)
 {
   if (len == -1)
     len = lstrlenA(mcb);
@@ -102,7 +106,7 @@ inline int mcbs2w(const char* mcb, int len, wchar_t* wbuf, int wbuf_len, UINT cp
   return 0;
 }
 
-inline wchar_t* mcbs2wdup(const char* mcb, int len, int* wbuf_len, UINT cp = CP_ACP)
+inline wchar_t* mcbs2wdup(const char* mcb, int len, int* wbuf_len, UINT cp = NTCVT_CP_DEFAULT)
 {
   if (len == -1)
     len = lstrlenA(mcb);
@@ -118,56 +122,56 @@ inline wchar_t* mcbs2wdup(const char* mcb, int len, int* wbuf_len, UINT cp = CP_
 }
 
 #if _HAS_CXX17
-inline std::string from_chars(const std::wstring_view& wcb, UINT cp = CP_ACP)
+inline std::string from_chars(const std::wstring_view& wcb, UINT cp = NTCVT_CP_DEFAULT)
 {
   return wcbs2a<std::string>(wcb.data(), wcb.length(), cp);
 }
 
-inline std::wstring from_chars(const std::string_view& mcb, UINT cp = CP_ACP)
+inline std::wstring from_chars(const std::string_view& mcb, UINT cp = NTCVT_CP_DEFAULT)
 {
   return mcbs2w<std::wstring>(mcb.data(), mcb.length(), cp);
 }
 #else
-inline std::string from_chars(const std::wstring& wcb, UINT cp = CP_ACP)
+inline std::string from_chars(const std::wstring& wcb, UINT cp = NTCVT_CP_DEFAULT)
 {
   return wcbs2a<std::string>(wcb.c_str(), wcb.length(), cp);
 }
 
-inline std::wstring from_chars(const std::string& mcb, UINT cp = CP_ACP)
+inline std::wstring from_chars(const std::string& mcb, UINT cp = NTCVT_CP_DEFAULT)
 {
   return mcbs2w<std::wstring>(mcb.c_str(), mcb.length(), cp);
 }
 #endif
 
-inline std::string from_chars(const wchar_t* str, UINT cp = CP_ACP)
+inline std::string from_chars(const wchar_t* str, UINT cp = NTCVT_CP_DEFAULT)
 {
   return wcbs2a<std::string>(str, -1, cp);
 }
 
-inline std::wstring from_chars(const char* str, UINT cp = CP_ACP)
+inline std::wstring from_chars(const char* str, UINT cp = NTCVT_CP_DEFAULT)
 {
   return mcbs2w<std::wstring>(str, -1, cp);
 }
 
 // ntcs or std::string to CStringW
 #if defined(_AFX)
-inline std::string from_chars(const CStringW& wcb, UINT cp = CP_ACP)
+inline std::string from_chars(const CStringW& wcb, UINT cp = NTCVT_CP_DEFAULT)
 {
   return wcbs2a<std::string>(wcb.GetString(), wcb.GetLength(), cp);
 }
 namespace afx
 {
 #  if _HAS_CXX17
-inline CStringW from_chars(std::string_view mcb, UINT cp = CP_ACP)
+inline CStringW from_chars(std::string_view mcb, UINT cp = NTCVT_CP_DEFAULT)
 {
   return mcbs2w<CStringW>(mcb.data(), mcb.length(), cp);
 }
 #  else
-inline CStringW from_chars(const char* str, UINT cp = CP_ACP)
+inline CStringW from_chars(const char* str, UINT cp = NTCVT_CP_DEFAULT)
 {
   return mcbs2w<CStringW>(str, -1, cp);
 }
-inline CStringW from_chars(const std::string& mcb, UINT cp = CP_ACP)
+inline CStringW from_chars(const std::string& mcb, UINT cp = NTCVT_CP_DEFAULT)
 {
   return mcbs2w<CStringW>(mcb.c_str(), mcb.length(), cp);
 }
