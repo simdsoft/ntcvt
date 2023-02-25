@@ -42,7 +42,7 @@ public:
   // std::wstring: for loop (slow performance)
   // only works on msvc currently
 #if !defined(_MSVC) && (!defined(_HAS_CXX23) || !_HAS_CXX23)
-  template <class _Operation> void resize_and_overwrite(const size_type _New_size, _Operation&& _Op)
+  template <class _Operation> void resize_and_overwrite(const size_t _New_size, _Operation&& _Op)
   {
     this->reserve(_New_size);
 
