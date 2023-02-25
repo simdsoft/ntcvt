@@ -1,4 +1,4 @@
-// v2.0 require C++11+
+// v1.0 require C++11+
 #ifndef SIMDSOFT__NTCVT_HPP
 #define SIMDSOFT__NTCVT_HPP
 
